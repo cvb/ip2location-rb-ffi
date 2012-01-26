@@ -3,7 +3,7 @@ module IP2LFFI
   ffi_lib 'libIP2Location.so'
 
   # IP2Location *IP2Location_open(char *db);
-  attach_function :IP2Location_open, [ :string ], :pointer
+  attach_function :IP2Location_open, [:string], :pointer
   # uint32_t IP2Location_close(IP2Location *loc);
   attach_function :IP2Location_close, [:pointer], :uint
 
@@ -32,8 +32,7 @@ module IP2LFFI
   attach_function :IP2Location_free_record, [:pointer], :void
 
   class IP2LocationRecord < FFI::ManagedStruct
-    layout
-    :country_short,      :string,
+    layout :country_short,      :string,
     :country_long,       :string,
     :region,             :string,
     :city,               :string,
@@ -54,8 +53,7 @@ module IP2LFFI
   end
 
   class IP2Location < FFI::ManagedStruct
-    layout
-    :filehandle,     :pointer,
+    layout :filehandle,     :pointer,
     :databasetype,   :char,
     :databasecolumn, :char,
     :databaseday,    :char,
