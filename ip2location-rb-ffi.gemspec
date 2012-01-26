@@ -10,4 +10,6 @@ Gem::Specification.new do |s|
   s.files        = Dir["{lib,spec}/**/*", "init.rb"] - ["Gemfile.lock"]
   s.require_path = "lib"
 
+  s.add_dependency('ffi')
+
 end
