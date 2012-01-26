@@ -1,5 +1,7 @@
 class IP2L
 
+  NOT_SUPPORTED = "This parameter is unavailable for selected data file. Please upgrade the data file."
+
   %w(country_short country_long region city isp
      latitude longitude domain zipcode timezone
      netspeed iddcode areacode weatherstationcode
@@ -9,18 +11,22 @@ class IP2L
       raise IP2LErrors::OutsideWithDb, "use this function inside with_db block" unless @db
       r = IP2LFFI.send("IP2Location_get_#{m}", @db, ip)
       return nil if r == FFI::Pointer::NULL
-      ruby_result = r[m.to_sym]
-      IP2LFFI.IP2Location_free_record(r)
+      ruby_result = IP2LFFI::IP2LocationRecord.new(r)[m.to_sym]
+      return nil if ruby_result == NOT_SUPPORTED
       return ruby_result
     end
   end
 
-  def with_db(dbfile, &code)
-    @db = open_database(db_file)
+  def set_db(dbfile)
+    @dbfile = dbfile
+  end
+
+  def with_db(dbfile = nil, &code)
+    @db = open_database((dbfile or @dbfile))
     begin
       yield code
     ensure
-      close_database db
+      close_database @db
     end
   end
 

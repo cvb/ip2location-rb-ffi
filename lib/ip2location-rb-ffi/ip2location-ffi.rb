@@ -33,35 +33,39 @@ module IP2LFFI
 
   class IP2LocationRecord < FFI::ManagedStruct
     layout :country_short,      :string,
-    :country_long,       :string,
-    :region,             :string,
-    :city,               :string,
-    :isp,                :string,
-    :latitude,           :float,
-    :longitude,          :float,
-    :domain,             :string,
-    :zipcode,            :string,
-    :timezone,           :string,
-    :netspeed,           :string,
-    :iddcode,            :string,
-    :areacode,           :string,
-    :weatherstationcode, :string,
-    :weatherstationname, :string,
-    :mcc,                :string,
-    :mnc,                :string,
-    :mobilebrand,        :string
+           :country_long,       :string,
+           :region,             :string,
+           :city,               :string,
+           :isp,                :string,
+           :latitude,           :float,
+           :longitude,          :float,
+           :domain,             :string,
+           :zipcode,            :string,
+           :timezone,           :string,
+           :netspeed,           :string,
+           :iddcode,            :string,
+           :areacode,           :string,
+           :weatherstationcode, :string,
+           :weatherstationname, :string,
+           :mcc,                :string,
+           :mnc,                :string,
+           :mobilebrand,        :string
+
+    def self.release(ptr)
+      IP2Location_free_record(ptr)
+    end
   end
 
   class IP2Location < FFI::ManagedStruct
     layout :filehandle,     :pointer,
-    :databasetype,   :char,
-    :databasecolumn, :char,
-    :databaseday,    :char,
-    :databasemonth,  :char,
-    :databaseyear,   :char,
-    :databasecount,  :uint,
-    :databaseaddr,   :uint,
-    :ipversion,      :uint
+           :databasetype,   :char,
+           :databasecolumn, :char,
+           :databaseday,    :char,
+           :databasemonth,  :char,
+           :databaseyear,   :char,
+           :databasecount,  :uint,
+           :databaseaddr,   :uint,
+           :ipversion,      :uint
   end
 
 end
