@@ -7,14 +7,18 @@ class IP2L
      netspeed iddcode areacode weatherstationcode
      weatherstationname mcc mnc mobilebrand).each do |m|
 
-    define_method("find_by_#{m}") do |ip|
-      raise IP2LErrors::OutsideWithDb, "use this function inside with_db block" unless @db
+    define_method("find_#{m}_for") do |ip|
+      raise IP2LErrors::OutsideWithDb, "use this function inside with_db block" if @db.nil?
       r = IP2LFFI.send("IP2Location_get_#{m}", @db, ip)
       return nil if r == FFI::Pointer::NULL
       ruby_result = IP2LFFI::IP2LocationRecord.new(r)[m.to_sym]
-      return nil if ruby_result == NOT_SUPPORTED
+      return nil if ruby_result == NOT_SUPPORTED || ruby_result == '-'
       return ruby_result
     end
+  end
+
+  def initialize(dbfile=nil)
+    @dbfile = dbfile
   end
 
   def set_db(dbfile)
